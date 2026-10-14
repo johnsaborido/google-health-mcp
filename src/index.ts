@@ -1,28 +1,11 @@
 #!/usr/bin/env node
 import cors from "cors";
 import express from "express";
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { SERVER_NAME, SERVER_VERSION } from "./constants.js";
+import { createServer } from "./server.js";
 import { runCliCommand } from "./cli/commands.js";
-import { registerGoogleHealthPrompts } from "./prompts/google-health-prompts.js";
-import { registerGoogleHealthResources } from "./resources/google-health-resources.js";
-import { installClientSafeToolSchemas } from "./services/client-safe-json-schema.js";
-import { registerGoogleHealthTools } from "./tools/google-health-tools.js";
-
-function createServer(): McpServer {
-  const server = new McpServer({
-    name: SERVER_NAME,
-    version: SERVER_VERSION
-  });
-
-  registerGoogleHealthTools(server);
-  registerGoogleHealthResources(server);
-  registerGoogleHealthPrompts(server);
-  installClientSafeToolSchemas(server);
-  return server;
-}
 
 async function runStdio(): Promise<void> {
   const server = createServer();

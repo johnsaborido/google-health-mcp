@@ -1,10 +1,14 @@
 {
-  "version": 2,
-  "builds": [
-    { "src": "docs/**/*", "use": "@vercel/static" }
-  ],
-  "routes": [
-    { "src": "/", "dest": "/docs/index.html" },
-    { "src": "/(.*)", "dest": "/docs/$1" }
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "npm run build",
+  "outputDirectory": "docs",
+  "regions": ["lhr1"],
+  "functions": {
+    "api/mcp.js": { "maxDuration": 60, "includeFiles": "dist/**" }
+  },
+  "rewrites": [
+    { "source": "/mcp/:secret", "destination": "/api/mcp?secret=:secret" },
+    { "source": "/healthz", "destination": "/api/mcp?health=1" }
   ]
 }
